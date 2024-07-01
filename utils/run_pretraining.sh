@@ -1,0 +1,1 @@
+python train_vit.py --patch_size 0
