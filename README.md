@@ -241,7 +241,3 @@ Automatic mixed precision (AMP) is enabled for faster training.
 ## Citation
 
 If you use this code in your research, please cite the relevant papers and acknowledge the MIME-ViT architecture.
-
-## License
-
-Please refer to the license file for usage terms and conditions.
