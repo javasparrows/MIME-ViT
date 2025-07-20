@@ -31,7 +31,7 @@ cfg = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cfg)
 cfg = cfg.Config  # Get the Config class
 
-# 古いLOG_DIRを削除
+# Delete old LOG_DIR
 if os.path.isdir(LOG_DIR) == True:
     shutil.rmtree(LOG_DIR)
     print(f'Directory {LOG_DIR} has been deleted.')
@@ -73,11 +73,6 @@ class ExpandDims(A.ImageOnlyTransform):
 
 
 def get_transforms(cfg, train=True):
-    """
-    ElasticTransform: これは、乳房組織の自然な変形をシミュレートします。ただし、パラメータは適切に調整する必要があります。
-    GaussianNoise: マンモグラフィ画像には時折ノイズが含まれるため、ガウスノイズを追加することでモデルのロバスト性を向上させることができます。
-    GridDistortion: この変換は局所的な歪みを画像に追加します。これは、乳房の圧迫による形状の変化を模倣する可能性があります。
-    """
     transforms_list = []
     if cfg.AUGMENTATION.CLAHE:
         # clip_limit, tile_grid_size = 4.0, (8, 8)
@@ -90,12 +85,6 @@ def get_transforms(cfg, train=True):
             transforms_list.append(A.HorizontalFlip(p=0.5))
         if cfg.AUGMENTATION.VFLIP:
             transforms_list.append(A.VerticalFlip(p=0.5))
-        if cfg.AUGMENTATION.ELASTIC:
-            transforms_list.append(A.ElasticTransform(p=0.5, alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03))
-        if cfg.AUGMENTATION.GAUSS_NOISE:
-            transforms_list.append(A.GaussNoise(var_limit=(10.0, 50.0), p=0.5))
-        if cfg.AUGMENTATION.GRID_DISTORTION:
-            transforms_list.append(A.GridDistortion(p=0.5))
         if cfg.AUGMENTATION.ROTATE:
             transforms_list.append(A.Rotate(p=0.5, limit=cfg.AUGMENTATION.ROTATE.LIMIT))
         if cfg.AUGMENTATION.RANDOMSIZEDCROP:
@@ -140,14 +129,14 @@ val_loader = DataLoader(val_dataset, batch_size=cfg.GENERAL.BATCH_SIZE, shuffle=
 print('Train dataset size:', len(train_dataset))
 print('Validation dataset size:', len(val_dataset))
 
-# モデルの定義
+# Model definition
 print(cfg.MODEL.NAME)
 if cfg.MODEL.NAME == 'UNet':
     model = UNet(n_channels=1, n_classes=3)
 elif cfg.MODEL.NAME == 'MIMEViT':
     model = MIMEViT(n_classes=3)
 
-# パラメータカウント
+# Parameter count
 params = 0
 for p in model.parameters():
     if p.requires_grad:
