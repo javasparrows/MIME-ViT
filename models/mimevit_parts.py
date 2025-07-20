@@ -152,31 +152,31 @@ class Transformer(nn.Module):
 class ResidualBlock(nn.Module):
     def __init__(self, first_conv_in_channels, first_conv_out_channels, stride=1):
         """
-        残差ブロックを作成するクラス
+        Class for creating residual blocks
         Args:
-            first_conv_in_channels : 1番目のconv層（1×1）のinput channel数
-            first_conv_out_channels : 1番目のconv層（1×1）のoutput channel数
-            identity_conv : channel数調整用のconv層
-            stride : 3×3conv層におけるstide数。sizeを半分にしたいときは2に設定
+            first_conv_in_channels : Input channel count for the first conv layer (1x1)
+            first_conv_out_channels : Output channel count for the first conv layer (1x1)
+            identity_conv : Conv layer for channel adjustment
+            stride : Stride count for 3x3 conv layer. Set to 2 when you want to halve the size
         """
         super(ResidualBlock, self).__init__()
 
-        # 1番目のconv層（1×1）
+        # First conv layer (1x1)
         self.conv1 = nn.Conv2d(
             first_conv_in_channels, first_conv_out_channels, kernel_size=1, stride=1, padding=0)
 
-        # 2番目のconv層（3×3）
-        # パターン3の時はsizeを変更できるようにstrideは可変
+        # Second conv layer (3x3)
+        # For pattern 3, stride is variable to allow size changes
         self.conv2 = nn.Conv2d(
             first_conv_out_channels, 4, kernel_size=3, stride=2, padding=1)
 
-        # 3番目のconv層（1×1）
-        # output channelはinput channelの4倍になる
+        # Third conv layer (1x1)
+        # Output channel becomes 4 times the input channel
         self.conv3 = nn.Conv2d(
             4, 32, kernel_size=1, stride=2, padding=0)
         self.relu = nn.ReLU()
 
-        # identityのchannel数の調整が必要な場合はconv層（1×1）を用意、不要な場合はNone
+        # Prepare conv layer (1x1) for identity channel adjustment if needed, None if not needed
         # self.identity_conv = nn.Conv2d(1, 4, kernel_size=1, stride=3, padding=0)
         
         # self.ln = nn.LayerNorm(683)
@@ -185,15 +185,15 @@ class ResidualBlock(nn.Module):
 
     def forward(self, x):
 
-        identity = x.clone()  # 入力を保持する
+        identity = x.clone()  # Preserve the input
 
-        x = self.conv1(x)  # 1×1の畳み込み
+        x = self.conv1(x)  # 1x1 convolution
         x = self.relu(x)
-        x = self.conv2(x)  # 3×3の畳み込み（パターン3の時はstrideが2になるため、ここでsizeが半分になる）
+        x = self.conv2(x)  # 3x3 convolution (for pattern 3, stride is 2, so size becomes half here)
         x = self.relu(x)
-        x = self.conv3(x)  # 1×1の畳み込み
+        x = self.conv3(x)  # 1x1 convolution
 
-        # 必要な場合はconv層（1×1）を通してidentityのchannel数の調整してから足す
+        # If necessary, adjust identity channel count through conv layer (1x1) before adding
         # if self.identity_conv is not None:
         #     identity = self.identity_conv(identity)
         # x += identity

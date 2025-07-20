@@ -60,7 +60,7 @@ class WeightedFocalLoss(nn.Module):
 
 
 class DiceLoss(nn.Module):
-    # Dice loss は特に医療画像セグメンテーションタスクでよく使用されます。各クラスの予測確率の平均を最大化することによって、クラス不均衡を軽減します。
+    # Dice loss is commonly used in medical image segmentation tasks. It mitigates class imbalance by maximizing the average of prediction probabilities for each class.
     def __init__(self, smooth=1e-5):
         super(DiceLoss, self).__init__()
         self.smooth = smooth
@@ -77,8 +77,8 @@ class DiceLoss(nn.Module):
 
 
 class TverskyLoss(nn.Module):
-    # Dice Lossを一般化した形で、False PositivesとFalse Negativesのトレードオフを制御するハイパーパラメータを導入します。これにより、クラス不均衡に対するより良い制御が可能となります。
-    # この関数は2値分類問題に対して用いることが可能ですが、マルチクラス分類問題への適用は注意が必要
+    # A generalized form of Dice Loss that introduces hyperparameters to control the trade-off between False Positives and False Negatives. This enables better control over class imbalance.
+    # This function can be used for binary classification problems, but caution is needed when applying to multi-class classification problems
     def __init__(self, alpha=0.5, beta=0.5, smooth=1e-5):
         super(TverskyLoss, self).__init__()
         self.alpha = alpha
@@ -98,7 +98,7 @@ class TverskyLoss(nn.Module):
 
 
 class FBetaLoss(nn.Module):
-    # PrecisionとRecallの調和平均であるF1スコアを一般化したもので、betaパラメータを調整することでRecallを重視するかPrecisionを重視するかを制御できます。
+    # A generalized version of the F1 score, which is the harmonic mean of Precision and Recall. By adjusting the beta parameter, you can control whether to emphasize Recall or Precision.
     def __init__(self, beta=1., smooth=1e-5):
         super(FBetaLoss, self).__init__()
         self.beta = beta
@@ -118,11 +118,11 @@ class FBetaLoss(nn.Module):
 
 class CrossEntropyFBetaLoss(nn.Module):
     def __init__(self, beta=1., eps=1e-7, weight_ce=0.5, weight_fbeta=0.5, weight=None):
-        # beta < 1: precisionをより重視します。つまり、False Positive（実際にはNegativeなのにPositiveと予測されたもの）の数を抑制することをより重視します。
-        # beta > 1: recallをより重視します。つまり、False Negative（実際にはPositiveなのにNegativeと予測されたもの）の数を抑制することをより重視します。
-        # eps: 計算中にゼロによる除算を防ぐための小さな値。デフォルトは1e-7。
-        # weight_ce: クロスエントロピー損失（ce_loss）の重み。総損失におけるce_lossの影響度を調節します。デフォルトは0.5。
-        # weight_fbeta: FBeta損失（fbeta_loss）の重み。総損失におけるfbeta_lossの影響度を調節します。デフォルトは0.5。
+        # beta < 1: emphasizes precision more. That is, it focuses more on suppressing the number of False Positives (cases that are actually Negative but predicted as Positive).
+        # beta > 1: emphasizes recall more. That is, it focuses more on suppressing the number of False Negatives (cases that are actually Positive but predicted as Negative).
+        # eps: a small value to prevent division by zero during calculation. Default is 1e-7.
+        # weight_ce: weight for cross-entropy loss (ce_loss). Adjusts the influence of ce_loss in the total loss. Default is 0.5.
+        # weight_fbeta: weight for FBeta loss (fbeta_loss). Adjusts the influence of fbeta_loss in the total loss. Default is 0.5.
         super(CrossEntropyFBetaLoss, self).__init__()
         self.beta = beta
         self.eps = eps

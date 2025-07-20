@@ -18,7 +18,7 @@ from model_v5_seg.pcgrad import PCGrad
 from torch.cuda.amp import autocast, GradScaler
 
 def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, optimizer, scheduler, epochs, root_path, metric='v1'):
-    model.train()  # モデルを訓練モードに設定
+    model.train()  # Set model to training mode
 
     best_score = 0.0
     root_path += f'/fold{fold_num}'
@@ -36,13 +36,13 @@ def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, opt
         writer.writerow(["epoch", "lr", "loss"])
 
         scaler = GradScaler()
-        for epoch in range(epochs):  # エポック数
+        for epoch in range(epochs):  # Number of epochs
             loss_list = []
             cls_loss_list = []
             seg_loss_list = []
             
             accumulation_steps = 16
-            optimizer.zero_grad()  # オプティマイザの勾配をゼロにリセット
+            optimizer.zero_grad()  # Reset optimizer gradients to zero
 
             for i, (images, true_masks, _, _) in enumerate(tqdm(train_loader)):
                 true_masks = torch.squeeze(true_masks, dim=1).long()
@@ -50,7 +50,7 @@ def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, opt
                 images = images.to(device)
                 true_masks = true_masks.to(device)
 
-                with autocast():  # autocastコンテキストを使用
+                with autocast():  # Use autocast context
                     masks_pred = model(images)
 
                     cls_loss = criterion(masks_pred, true_masks.long())
@@ -65,13 +65,13 @@ def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, opt
                     seg_loss_list.append(seg_loss.item())
                     loss_list.append(loss.item())
                     
-                    loss = loss / accumulation_steps  # 勾配のスケーリング
+                    loss = loss / accumulation_steps  # Gradient scaling
 
-                scaler.scale(loss).backward()  # スケールされた勾配を蓄積
+                scaler.scale(loss).backward()  # Accumulate scaled gradients
 
-                if (i + 1) % accumulation_steps == 0:  # accumulation_stepsごとに勾配を更新
+                if (i + 1) % accumulation_steps == 0:  # Update gradients every accumulation_steps
                     optimizer.step()
-                    optimizer.zero_grad()  # 勾配をリセット
+                    optimizer.zero_grad()  # Reset gradients
                 # optimizer.step()
 
                 loss_list.append(loss.item())
@@ -86,15 +86,15 @@ def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, opt
             # Add this line to flush the file after each epoch
             f.flush()
             
-            # スケジューラーを更新
+            # Update scheduler
             if scheduler is not None:
                 if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-                    scheduler.step(loss_mean)  # 学習率を更新
+                    scheduler.step(loss_mean)  # Update learning rate
                 else:
-                    scheduler.step()  # 学習率を更新
+                    scheduler.step()  # Update learning rate
 
 
-            # 評価ループ
+            # Evaluation loop
             model.eval()
             total = 0
             dice_scores = []
@@ -132,7 +132,7 @@ def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, opt
                 save_model(model, epoch, root_path)
 
 def train_eachmask(cfg, fold_num, model, device, train_loader, val_loader, criterion, optimizer, scheduler, epochs, root_path, metric='v1'):
-    model.train()  # モデルを訓練モードに設定
+    model.train()  # Set model to training mode
 
     best_score = 0.0
     root_path += f'/fold{fold_num}'
@@ -190,15 +190,15 @@ def train_eachmask(cfg, fold_num, model, device, train_loader, val_loader, crite
             # Add this line to flush the file after each epoch
             f.flush()
             
-            # スケジューラーを更新
+            # Update scheduler
             if scheduler is not None:
                 if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-                    scheduler.step(loss_mean)  # 学習率を更新
+                    scheduler.step(loss_mean)  # Update learning rate
                 else:
-                    scheduler.step()  # 学習率を更新
+                    scheduler.step()  # Update learning rate
 
 
-            # 評価ループ
+            # Evaluation loop
             model.eval()
             total = 0
             all_true_masks = []
@@ -287,7 +287,7 @@ def get_image_and_masks(dataset, filename):
     
     image, masks_transformed = dataset.apply_transforms(image, masks=masks)
     
-    # 正規化
+    # Normalization
     image = dataset.normalize(image=image)['image']
     image = image.transpose(2, 0, 1)
     
@@ -439,7 +439,7 @@ def iou_score(masks_pred, true_masks, th=0.5):
 import torch
 
 def get_bounding_box(mask):
-    """マスクからバウンディングボックスを取得"""
+    """Get bounding box from mask"""
     rows = torch.any(mask, dim=1)
     cols = torch.any(mask, dim=0)
     
@@ -451,24 +451,24 @@ def get_bounding_box(mask):
         return None
 
 def compute_iou(box1, box2):
-    """2つのバウンディングボックスのIoUを計算"""
+    """Calculate IoU of two bounding boxes"""
     rmin1, rmax1, cmin1, cmax1 = box1
     rmin2, rmax2, cmin2, cmax2 = box2
 
-    # 交差領域の座標
+    # Intersection area coordinates
     rmin_int = max(rmin1, rmin2)
     rmax_int = min(rmax1, rmax2)
     cmin_int = max(cmin1, cmin2)
     cmax_int = min(cmax1, cmax2)
 
-    # 交差領域の面積
+    # Intersection area
     area_int = max(0, rmax_int - rmin_int + 1) * max(0, cmax_int - cmin_int + 1)
 
-    # 各バウンディングボックスの面積
+    # Area of each bounding box
     area_box1 = (rmax1 - rmin1 + 1) * (cmax1 - cmin1 + 1)
     area_box2 = (rmax2 - rmin2 + 1) * (cmax2 - cmin2 + 1)
 
-    # IoUの計算
+    # IoU calculation
     iou = area_int / (area_box1 + area_box2 - area_int)
     return iou
 
@@ -479,7 +479,7 @@ def iou_bounding_score(masks_pred, true_masks, th=0.5):
     box_true = get_bounding_box(true_masks)
     
     if box_pred is None or box_true is None:
-        return 0.0  # マスクが空の場合はIoUスコアを0とする
+        return 0.0  # If mask is empty, set IoU score to 0
     
     iou = compute_iou(box_pred, box_true)
     return iou

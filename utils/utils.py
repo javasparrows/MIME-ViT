@@ -16,7 +16,7 @@ from collections import Counter
 from model_v5_cv.pcgrad import PCGrad
 
 def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, optimizer, scheduler, epochs, root_path, metric='v1'):
-    model.train()  # モデルを訓練モードに設定
+    model.train()  # Set model to training mode
 
     best_score = 0.0
     root_path += f'/fold{fold_num}'
@@ -33,7 +33,7 @@ def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, opt
         writer = csv.writer(f)
         writer.writerow(["epoch", "lr", "loss"])
 
-        for epoch in range(epochs):  # エポック数
+        for epoch in range(epochs):  # Number of epochs
             loss_list = []
             cls_loss_list = []
             seg_loss_list = []
@@ -70,15 +70,15 @@ def train(cfg, fold_num, model, device, train_loader, val_loader, criterion, opt
             # Add this line to flush the file after each epoch
             f.flush()
             
-            # スケジューラーを更新
+            # Update scheduler
             if scheduler is not None:
                 if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-                    scheduler.step(loss_mean)  # 学習率を更新
+                    scheduler.step(loss_mean)  # Update learning rate
                 else:
-                    scheduler.step()  # 学習率を更新
+                    scheduler.step()  # Update learning rate
 
 
-            # 評価ループ
+            # Evaluation loop
             model.eval()
             total = 0
             correct = 0
@@ -169,7 +169,7 @@ def get_image_and_masks(dataset, filename):
     
     image, masks_transformed = dataset.apply_transforms(image, masks=masks)
     
-    # 正規化
+    # Normalization
     image = dataset.normalize(image=image)['image']
     image = image.transpose(2, 0, 1)
     

@@ -48,7 +48,7 @@ if cfg.AUGMENTATION.CLAHE:
         transforms_list.append(A.CLAHE(clip_limit=4.0, tile_grid_size=(8, 8), always_apply=True, p=1.0))
 test_transform = A.Compose(transforms_list)
 
-# テストデータローダーを定義する
+# Define test data loader
 test_csv_path = f'/home/yukik/Work/Tohoku/original/convert_dataset/split_{cfg.GENERAL.CSV_RANDOM_SEED}/test.csv'
 test_dataset = CSVSegmentationDataset(csv_path=test_csv_path,
                                       transform=test_transform)

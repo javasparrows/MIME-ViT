@@ -129,7 +129,7 @@ class CSVSegmentationDataset(Dataset):
         
         image, masks_transformed = self.apply_transforms(image, masks=masks)
         
-        # 正規化
+        # Normalization
         image = self.normalize(image=image)['image']
         image = image.transpose(2, 0, 1)
         
