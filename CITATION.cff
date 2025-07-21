@@ -1,0 +1,12 @@
+cff-version: 1.1.0
+message: If you use this repository, please cite it using these metadata.
+title: MIME-ViT
+abstract: MIME-ViT (Multiscale Image Morphological Extraction Vision Transformer) is a hybrid deep learning architecture that combines Vision Transformer and CNN components to capture multiscale morphological features of breast cancer in mammographic images. The model processes image patches at multiple scales (512×512, 256×256, 64×64, 16×16) to extract both macroscale and microscale features for enhanced breast cancer detection.
+authors:
+  - family-names: Kashiwada
+    given-names: Yuki
+    orcid: "https://orcid.org/0009-0005-3530-2564"
+version: 0.2.0
+date-released: "2025-07-22"
+license: Apache-2.0
+repository-code: "https://github.com/javasparrows/MIME-ViT"
