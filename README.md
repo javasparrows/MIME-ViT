@@ -1,14 +1,15 @@
-# MIME-ViT: Medical Image Segmentation with Vision Transformer
+# MIME-ViT: Multiscale Image Morphological Extraction Vision Transformer
 
-MIME-ViT is a hybrid deep learning model that combines Vision Transformer (ViT) and U-Net architectures for medical image segmentation tasks, specifically designed for breast cancer detection and segmentation in mammography images.
+MIME-ViT is a hybrid deep learning architecture that integrates Vision Transformer (ViT) and CNN components for breast cancer detection in mammographic images. The model captures multiscale morphological features through discrete components processing image patches at various scales.
 
 ## Model Architecture
 
-The MIME-ViT model integrates:
-- **Vision Transformer (ViT)** components for capturing global features at multiple scales
-- **U-Net** decoder architecture for precise localization and segmentation
-- **Residual blocks** for enhanced feature extraction
-- **Multi-scale processing** with different patch sizes (512, 256, 64, 16)
+The MIME-ViT architecture features:
+- **Multiscale ViT components** for patches at 512×512, 256×256, 64×64, and 16×16 scales
+- **Macroscale feature extraction** (512×512, 256×256) for overall mass shapes and microcalcification distributions
+- **Microscale feature extraction** (64×64, 16×16) for marginal irregularities and detailed morphology
+- **CNN component** for additional feature processing
+- **Dimension reduction** through convolution and pooling for memory efficiency
 
 ### Key Features:
 - Multi-scale Vision Transformer blocks for hierarchical feature extraction
