@@ -1,12 +1,108 @@
-cff-version: 1.1.0
-message: If you use this repository, please cite it using these metadata.
+cff-version: 1.2.0
+message: "If you use this software, please cite the MIME-ViT paper listed under preferred-citation."
+type: software
 title: MIME-ViT
-abstract: MIME-ViT (Multiscale Image Morphological Extraction Vision Transformer) is a hybrid deep learning architecture that combines Vision Transformer and CNN components to capture multiscale morphological features of breast cancer in mammographic images. The model processes image patches at multiple scales (512×512, 256×256, 64×64, 16×16) to extract both macroscale and microscale features for enhanced breast cancer detection.
+abstract: >-
+  MIME-ViT (Multiscale Image Morphological Extraction Vision Transformer) is a
+  hybrid deep learning architecture that combines Vision Transformer and CNN
+  branches to capture multiscale morphological features of breast lesions in
+  mammograms. It processes image patches at multiple scales (512x512, 256x256,
+  64x64, 16x16) to extract both macroscale and microscale features for breast
+  cancer detection.
 authors:
   - family-names: Kashiwada
     given-names: Yuki
     orcid: "https://orcid.org/0009-0005-3530-2564"
-version: 0.2.0
-date-released: "2025-07-22"
+version: "1.2"
+date-released: "2025-07-25"
+doi: 10.5281/zenodo.16417003
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.16417003
+    description: Zenodo archive of MIME-ViT v1.2
+  - type: doi
+    value: 10.5281/zenodo.16221703
+    description: Zenodo archive of MIME-ViT (cited in the paper's Methods)
 license: Apache-2.0
 repository-code: "https://github.com/javasparrows/MIME-ViT"
+url: "https://yukikashiwada.com/en/research/mime-vit"
+keywords:
+  - breast cancer detection
+  - mammography
+  - vision transformer
+  - deep learning
+  - medical imaging
+  - TOMPEI-CMMD
+preferred-citation:
+  type: article
+  title: >-
+    Applying vision transformer to assess multi-scale morphological features in
+    mammography for breast cancer detection: multiscale image morphological
+    extraction vision transformer (MIME-ViT)
+  authors:
+      - family-names: Kashiwada
+        given-names: Yuki
+        orcid: "https://orcid.org/0009-0005-3530-2564"
+      - family-names: Takaya
+        given-names: Eichi
+        orcid: "https://orcid.org/0000-0003-2541-1685"
+      - family-names: Hiroya
+        given-names: Mei
+        orcid: "https://orcid.org/0009-0000-4617-934X"
+      - family-names: Matsuda
+        given-names: Nanako
+        orcid: "https://orcid.org/0009-0005-7457-6955"
+      - family-names: Yashima
+        given-names: Takumi
+        orcid: "https://orcid.org/0009-0002-1800-8409"
+      - family-names: Kobayashi
+        given-names: Tomoya
+        orcid: "https://orcid.org/0000-0001-8179-1702"
+      - family-names: Tamiya
+        given-names: Gen
+        orcid: "https://orcid.org/0000-0002-0597-415X"
+      - family-names: Ueda
+        given-names: Takuya
+        orcid: "https://orcid.org/0000-0002-0913-5791"
+  journal: PeerJ Computer Science
+  volume: 11
+  start: e3252
+  year: 2025
+  month: 10
+  doi: 10.7717/peerj-cs.3252
+  url: "https://peerj.com/articles/cs-3252/"
+  license: CC-BY-4.0
+references:
+  - type: data
+    title: TOMPEI-CMMD Dataset
+    authors:
+        - family-names: Kashiwada
+          given-names: Yuki
+          orcid: "https://orcid.org/0009-0005-3530-2564"
+        - family-names: Takaya
+          given-names: Eichi
+          orcid: "https://orcid.org/0000-0003-2541-1685"
+        - family-names: Hiroya
+          given-names: Mei
+          orcid: "https://orcid.org/0009-0000-4617-934X"
+        - family-names: Matsuda
+          given-names: Nanako
+          orcid: "https://orcid.org/0009-0005-7457-6955"
+        - family-names: Yashima
+          given-names: Takumi
+          orcid: "https://orcid.org/0009-0002-1800-8409"
+        - family-names: Kobayashi
+          given-names: Tomoya
+          orcid: "https://orcid.org/0000-0001-8179-1702"
+        - family-names: Tamiya
+          given-names: Gen
+          orcid: "https://orcid.org/0000-0002-0597-415X"
+        - family-names: Ueda
+          given-names: Takuya
+          orcid: "https://orcid.org/0000-0002-0913-5791"
+    publisher:
+      name: The Cancer Imaging Archive
+    version: "1"
+    year: 2025
+    doi: 10.7937/wezw-bh22
+    license: CC-BY-4.0
