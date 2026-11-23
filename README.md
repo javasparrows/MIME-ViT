@@ -1,5 +1,12 @@
 # MIME-ViT: Multiscale Image Morphological Extraction Vision Transformer
 
+[![DOI](https://img.shields.io/badge/DOI-10.7717%2Fpeerj--cs.3252-blue)](https://doi.org/10.7717/peerj-cs.3252)
+[![Code archive](https://zenodo.org/badge/DOI/10.5281/zenodo.16417003.svg)](https://doi.org/10.5281/zenodo.16417003)
+
+- Paper: [PeerJ Computer Science 11:e3252 (2025)](https://doi.org/10.7717/peerj-cs.3252) (open access, CC BY 4.0)
+- Project page: <https://yukikashiwada.com/en/research/mime-vit>
+- Training data: [TOMPEI-CMMD](https://doi.org/10.7937/wezw-bh22) on The Cancer Imaging Archive
+
 MIME-ViT is a hybrid deep learning architecture that integrates Vision Transformer (ViT) and CNN components for breast cancer detection in mammographic images. The model captures multiscale morphological features through discrete components processing image patches at various scales.
 
 ## Model Architecture
@@ -241,4 +248,19 @@ Automatic mixed precision (AMP) is enabled for faster training.
 
 ## Citation
 
-If you use this code in your research, please cite the relevant papers and acknowledge the MIME-ViT architecture.
+If you use this code in your research, please cite the MIME-ViT paper (see also `CITATION.cff`):
+
+> Kashiwada Y, Takaya E, Hiroya M, Matsuda N, Yashima T, Kobayashi T, Tamiya G, Ueda T. 2025. Applying vision transformer to assess multi-scale morphological features in mammography for breast cancer detection: multiscale image morphological extraction vision transformer (MIME-ViT). PeerJ Computer Science 11:e3252 https://doi.org/10.7717/peerj-cs.3252
+
+```bibtex
+@article{kashiwada2025mimevit,
+  author  = {Kashiwada, Yuki and Takaya, Eichi and Hiroya, Mei and Matsuda, Nanako and Yashima, Takumi and Kobayashi, Tomoya and Tamiya, Gen and Ueda, Takuya},
+  title   = {Applying vision transformer to assess multi-scale morphological features in mammography for breast cancer detection: multiscale image morphological extraction vision transformer ({MIME-ViT})},
+  journal = {PeerJ Computer Science},
+  volume  = {11},
+  pages   = {e3252},
+  year    = {2025},
+  doi     = {10.7717/peerj-cs.3252},
+  url     = {https://peerj.com/articles/cs-3252/}
+}
+```
